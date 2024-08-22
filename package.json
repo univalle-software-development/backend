@@ -1,14 +1,15 @@
 {
-  "name": "backend",
+  "name": "filmore-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "The Filmore Backend Development",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "express": "^4.19.2"
   }

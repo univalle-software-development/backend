@@ -1,0 +1,33 @@
+services:
+  filmore_backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    working_dir: /app/backend
+    user: node  
+    volumes:
+      - ./:/app/backend  # Mount the current directory to the container
+    ports:
+      - "3000:3000"      # Expose the port for the application
+    networks:
+      - local
+
+    command: |
+      bash -c '
+      if [ -f package.json ]; then
+        echo "Node Project already created"
+        echo "Installing dependencies"
+        npm install
+      else
+        echo "Creating the node project"
+        npm init -y
+        npm install -g nodemon
+        npm install express --save
+      fi && nodemon server.js'
+
+networks:
+  local:
+    driver: bridge  
