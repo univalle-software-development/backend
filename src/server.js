@@ -24,4 +24,3 @@ app.get('/about', (req, res) => {
   app.get('/contact', (req, res) => {
     res.send('Contact Page');
   });
-  

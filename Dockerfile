@@ -17,5 +17,5 @@ USER node
 RUN npm i -g nodemon
 RUN npm i express --save
 EXPOSE 3000
-CMD ["nodemon", "server.js"]
+CMD ["nodemon", "./src/server.js"]
 
