@@ -1,21 +1,25 @@
-// userControllerUnit.test.js
 const { addUser } = require('../src/controllers/userController');
-const User = require('../src/models/User'); // Sequelize model
+const User = require('../src/models/User');
 
-// Mock the Sequelize User model
-jest.mock('../src/models/User', () => {
-  return {
-    create: jest.fn(), // Mock the create method
-  };
-});
+jest.mock('../src/models/User', () => ({
+  create: jest.fn(),
+}));
 
 describe('User Controller - Add User', () => {
+  let consoleLogSpy, consoleErrorSpy;
+
   beforeEach(() => {
-    jest.clearAllMocks(); // Clear previous mocks before each test
+    jest.clearAllMocks();
+    consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+  });
+
+  afterEach(() => {
+    consoleLogSpy.mockRestore();
+    consoleErrorSpy.mockRestore();
   });
 
   it('should add a new user successfully', async () => {
-    // Arrange: Mock the create method to return the user
     const req = {
       body: {
         username: 'testUser',
@@ -27,18 +31,17 @@ describe('User Controller - Add User', () => {
       json: jest.fn()
     };
 
-    User.create.mockResolvedValue(req.body); // Mock successful user creation
+    User.create.mockResolvedValue(req.body);
 
-    // Act: Call the addUser controller function
     await addUser(req, res);
 
-    // Assert: Check the response and status code
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith(req.body);
+    expect(consoleLogSpy).toHaveBeenCalledWith('addUser: Creating user...');
+    expect(consoleLogSpy).toHaveBeenCalledWith('addUser: User created successfully', req.body);
   });
 
   it('should handle error if adding a user fails', async () => {
-    // Arrange: Mock the create method to throw an error
     const req = {
       body: {
         username: 'testUser',
@@ -50,13 +53,14 @@ describe('User Controller - Add User', () => {
       json: jest.fn()
     };
 
-    User.create.mockRejectedValue(new Error('Failed to add user')); // Mock failure
+    const error = new Error('Failed to add user');
+    User.create.mockRejectedValue(error);
 
-    // Act
     await addUser(req, res);
 
-    // Assert
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ error: 'Error adding user' });
+    expect(consoleLogSpy).toHaveBeenCalledWith('addUser: Creating user...');
+    expect(consoleErrorSpy).toHaveBeenCalledWith('addUser: Error occurred while creating user', error);
   });
 });
