@@ -18,10 +18,9 @@ app.listen(PORT, () => {
 });
 
 app.get('/about', (req, res) => {
-    res.send('About Page');
-  });
-  
-  app.get('/contact', (req, res) => {
-    res.send('Contact Page');
-  });
-  
+  res.send('About Page');
+});
+
+app.get('/contact', (req, res) => {
+  res.send('Contact Page');
+});
