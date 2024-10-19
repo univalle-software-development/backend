@@ -11,15 +11,20 @@ jest.mock('../src/models/UserReview', () => ({
 }));
 
 describe('UserReview Controller - Get User Reviews', () => {
+  let consoleErrorSpy;
+
   beforeEach(() => {
     jest.clearAllMocks();
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {}); // Espiamos y anulamos console.error
+  });
+
+  afterEach(() => {
+    consoleErrorSpy.mockRestore(); // Restauramos el comportamiento original después de cada prueba
   });
 
   it('should fetch all reviews for a specific user successfully', async () => {
-    // Mock User.findByPk to return a valid user
     User.findByPk.mockResolvedValue({ id: 1, username: 'testuser' });
 
-    // Mock UserReview.findAll to return a list of reviews
     UserReview.findAll.mockResolvedValue([
       {
         movie_name: 'Inception',
@@ -37,7 +42,6 @@ describe('UserReview Controller - Get User Reviews', () => {
 
     await userReviewController.getUserReviews(req, res);
 
-    // Assertions
     expect(User.findByPk).toHaveBeenCalledWith(1);
     expect(UserReview.findAll).toHaveBeenCalledWith({ where: { user_id: 1 } });
     expect(res.status).toHaveBeenCalledWith(200);
@@ -52,7 +56,6 @@ describe('UserReview Controller - Get User Reviews', () => {
   });
 
   it('should return 404 if the user is not found', async () => {
-    // Mock User.findByPk to return null (user not found)
     User.findByPk.mockResolvedValue(null);
 
     const req = { params: { user_id: 1 } };
@@ -63,17 +66,13 @@ describe('UserReview Controller - Get User Reviews', () => {
 
     await userReviewController.getUserReviews(req, res);
 
-    // Assertions
     expect(User.findByPk).toHaveBeenCalledWith(1);
     expect(res.status).toHaveBeenCalledWith(404);
     expect(res.json).toHaveBeenCalledWith({ error: 'User not found' });
   });
 
   it('should handle database errors gracefully', async () => {
-    // Mock User.findByPk to return a valid user
     User.findByPk.mockResolvedValue({ id: 1, username: 'testuser' });
-
-    // Mock UserReview.findAll to throw an error
     UserReview.findAll.mockRejectedValue(new Error('Database error'));
 
     const req = { params: { user_id: 1 } };
@@ -84,8 +83,13 @@ describe('UserReview Controller - Get User Reviews', () => {
 
     await userReviewController.getUserReviews(req, res);
 
-    // Assertions
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ error: 'Error fetching reviews' });
+
+    // Verificamos que el error de consola haya sido llamado pero sin que se imprima
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'getUserReviews: Error fetching reviews',
+      expect.any(Error)
+    );
   });
 });
