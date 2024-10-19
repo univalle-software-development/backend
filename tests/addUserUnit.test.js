@@ -1,4 +1,4 @@
-const { addUser } = require('../src/controllers/userController');
+const { addUser, getUser } = require('../src/controllers/userController');
 const User = require('../src/models/User');
 
 jest.mock('../src/models/User', () => ({
