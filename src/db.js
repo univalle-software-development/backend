@@ -21,9 +21,9 @@ const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
 async function connectDatabase() {
   try {
     await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
+    // console.log('Connection has been established successfully.');
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    // console.error('Unable to connect to the database:', error);
   }
 }
 
@@ -38,9 +38,9 @@ const UserReview = require('./models/UserReview'); // Import UserReview model
 // Sync database - This will create the necessary tables based on model definitions
 const isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
 sequelize.sync({ force: isDevelopment, alter: isDevelopment}).then(() => {
-  console.log('Database & tables synced!');
+  // console.log('Database & tables synced!');
 }).catch((err) => {
-  console.error('Error synchronizing the database:', err);
+  // console.error('Error synchronizing the database:', err);
 });
 
 module.exports = sequelize;
