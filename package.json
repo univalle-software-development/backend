@@ -4,6 +4,7 @@
   "description": "The Filmore Backend Development",
   "main": "./src/server.js",
   "scripts": {
+    "unit-test": "cross-env NODE_ENV=test jest --runInBand",
     "test": "jest --runInBand",
     "start": "node ./src/server.js",
     "db": "node ./src/db.js"
@@ -20,6 +21,12 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.13",
+    "cross-env": "^7.0.3",
     "jest": "^29.7.0"
+  },
+  "jest": {
+    "setupFiles": [
+      "./jest.setup.js"
+    ]
   }
 }
