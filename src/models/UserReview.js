@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db'); // Make sure this points to your Sequelize instance
-const User = require('./User'); // Import User model for foreign key reference
+const sequelize = require('../db');
+const User = require('./User');
 
 const UserReview = sequelize.define('UserReview', {
   movie_name: {
@@ -18,13 +18,13 @@ const UserReview = sequelize.define('UserReview', {
   user_id: {
     type: DataTypes.INTEGER,
     references: {
-      model: User, // Reference to the User model
+      model: User,
       key: 'id',
     },
     allowNull: false,
   },
 }, {
-  timestamps: true, // Adds createdAt and updatedAt columns
+  timestamps: true,
 });
 
 module.exports = UserReview;
