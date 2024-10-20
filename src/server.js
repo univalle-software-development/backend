@@ -24,3 +24,8 @@ app.get('/about', (req, res) => {
 app.get('/contact', (req, res) => {
   res.send('Contact Page');
 });
+
+app.get('/404', (req, res) => {
+  res.send('Error Page');
+});
+
