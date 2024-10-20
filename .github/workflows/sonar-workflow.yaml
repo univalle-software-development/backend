@@ -1,0 +1,43 @@
+name: Sonar Cloud frontend Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to main branch
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17' # Specify the Java version you want to use  
+          distribution: 'corretto' # See 'Supported distributions' for available options
+
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+			- name: SonarCloud Scan
+				env:
+					SONAR_TOKEN: ${{ secrets.FRONTEND_SONAR_TOKEN }}
+			  run: |
+			  	   npx sonar-scanner \
+				   -Dsonar.organization=univalle-software-development \
+				   -Dsonar.projectKey=univalle-software-development_backend \
+				   -Dsonar.sources=./src \
+				   -Dsonar.exclusions=**/node_modules/** \
+				   -Dsonar.host.url=https://sonarcloud.io \
+				   -Dsonar.javascript.node.maxspace=4096 \
+				   -Dsonar.tests=./tests \
+                   -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+				   -Dsonar.genericCoverageReportPaths=coverage/coverage-final.json
