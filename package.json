@@ -1,16 +1,33 @@
 {
-  "name": "filmore-backend",
-  "version": "1.0.0",
-  "description": "The Filmore Backend Development",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.19.2"
-  }
+	"name": "filmore-backend",
+	"version": "1.0.0",
+	"description": "The Filmore Backend Development",
+	"main": "./src/server.js",
+	"scripts": {
+		"unit-test": "cross-env NODE_ENV=test jest --runInBand",
+		"test": "jest --runInBand --config=package.json",
+		"test:coverage": "jest --coverage --config=jest.config.js",
+		"start": "node ./src/server.js",
+		"db": "node ./src/db.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"dotenv": "^16.4.5",
+		"express": "^4.19.2",
+		"pg": "^8.13.0",
+		"sequelize": "^6.37.4",
+		"sequelize-cli": "^6.6.2"
+	},
+	"devDependencies": {
+		"@types/jest": "^29.5.13",
+		"cross-env": "^7.0.3",
+		"jest": "^29.7.0"
+	},
+	"jest": {
+		"setupFiles": [
+			"./jest.setup.js"
+		]
+	}
 }
