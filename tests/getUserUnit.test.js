@@ -40,7 +40,24 @@ describe('User Controller - Get User', () => {
     expect(consoleLogSpy).toHaveBeenCalledWith('getUser: User gotten successfully', mockUser);
   });
 
-  
+  it('should return 404 if the user is not found', async () => {
+    const req = {
+      params: { user_id: 1 }
+    };
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn()
+    };
+
+    const error = new Error('Failed to get user');
+    User.findByPk.mockResolvedValue(null);
+
+    await getUser(req, res);
+
+    expect(User.findByPk).toHaveBeenCalledWith(1);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith({ error: 'User not found' });
+  });
 
   it('should handle error if getting a user fails', async () => {
     const req = {
