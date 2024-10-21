@@ -11,15 +11,19 @@ jest.mock('../src/models/UserReview', () => ({
 }));
 
 describe('addUserReview Unit Test', () => {
+  let consoleErrorMock;
+
   beforeEach(() => {
     jest.clearAllMocks();
+    consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleErrorMock.mockRestore(); 
   });
 
   it('should create a review for an existing user', async () => {
-    // Mock User.findByPk to return a valid user
     User.findByPk.mockResolvedValue({ id: 1, username: 'testuser' });
-
-    // Mock UserReview.create to return a new review
     UserReview.create.mockResolvedValue({
       movie_name: 'Inception',
       review_score: 9,
@@ -27,7 +31,6 @@ describe('addUserReview Unit Test', () => {
       user_id: 1,
     });
 
-    // Mock req and res
     const req = {
       body: {
         movie_name: 'Inception',
@@ -41,10 +44,8 @@ describe('addUserReview Unit Test', () => {
       json: jest.fn(),
     };
 
-    // Call the addUserReview function
     await userReviewController.addUserReview(req, res);
 
-    // Assertions
     expect(User.findByPk).toHaveBeenCalledWith(1);
     expect(UserReview.create).toHaveBeenCalledWith(req.body);
     expect(res.status).toHaveBeenCalledWith(201);
@@ -55,4 +56,55 @@ describe('addUserReview Unit Test', () => {
       user_id: 1,
     });
   });
+
+  it('should return 404 if user is not found', async () => {
+    User.findByPk.mockResolvedValue(null);
+
+    const req = {
+      body: {
+        movie_name: 'Inception',
+        review_score: 9,
+        review_comment: 'Great movie!',
+        user_id: 1,
+      },
+    };
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    await userReviewController.addUserReview(req, res);
+
+    expect(User.findByPk).toHaveBeenCalledWith(1);
+    expect(UserReview.create).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith({ error: 'User not found' });
+  });
+
+  it('should return 500 if an error occurs while creating review', async () => {
+    User.findByPk.mockResolvedValue({ id: 1, username: 'testuser' });
+    UserReview.create.mockRejectedValue(new Error('Database error'));
+
+    const req = {
+      body: {
+        movie_name: 'Inception',
+        review_score: 9,
+        review_comment: 'Great movie!',
+        user_id: 1,
+      },
+    };
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    await userReviewController.addUserReview(req, res);
+
+    expect(User.findByPk).toHaveBeenCalledWith(1);
+    expect(UserReview.create).toHaveBeenCalledWith(req.body);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Error adding review' });
+
+  });
 });
+
