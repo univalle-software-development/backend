@@ -8,8 +8,15 @@ jest.mock('../src/models/UserReview', () => ({
 }));
 
 describe('deleteUserReview Unit Test', () => {
+  let consoleLogSpy, consoleErrorSpy;
   beforeEach(() => {
     jest.clearAllMocks();
+    consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+  });
+  afterEach(() => {
+    consoleLogSpy.mockRestore();
+    consoleErrorSpy.mockRestore();
   });
 
   it('should delete a review if it exists', async () => {
