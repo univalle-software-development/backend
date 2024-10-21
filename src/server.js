@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
@@ -26,6 +26,9 @@ app.get('/contact', (req, res) => {
 });
 
 app.get('/404', (req, res) => {
-  res.send('Error Page');
+  res.status(404).send('Not found');
 });
+
+
+module.exports = {app, server};
 
