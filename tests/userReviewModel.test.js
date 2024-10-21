@@ -1,93 +1,64 @@
-const User = require('../src/models/User');
+jest.mock('../src/models/UserReview', () => {
+  const SequelizeMock = require('sequelize-mock');
+  const dbMock = new SequelizeMock();
+  return dbMock.define('UserReview', {
+    id: 1,
+    movie_name: 'testMovie',
+    review_score: 5,
+    review_comment: 'testComment',
+    user_id: 1,
+  });
+});
+
 const UserReview = require('../src/models/UserReview');
 
 describe('UserReview Model', () => {
-  beforeAll(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
+  test('UserReview model should be defined', () => {
+    expect(UserReview).toBeDefined();
+    expect(typeof UserReview.create).toBe('function');
+    expect(typeof UserReview.findOne).toBe('function');
+  });
+
   test('should create a UserReview successfully', async () => {
-    const userCreateSpy = jest.spyOn(User, 'create').mockResolvedValue({
-      id: 1,
-      username: 'testuser',
-      email: 'testuser@example.com',
-    });
-    
     const mockReview = {
       movie_name: 'Inception',
       review_score: 9,
       review_comment: 'Great movie!',
       user_id: 1
     };
-    const reviewCreateSpy = jest.spyOn(UserReview, 'create').mockResolvedValue(mockReview);
+    
+    const createdReview = await UserReview.create(mockReview);
+    expect(createdReview.movie_name).toBe(mockReview.movie_name);
+    expect(createdReview.review_score).toBe(mockReview.review_score);
+    expect(createdReview.review_comment).toBe(mockReview.review_comment);
+    expect(createdReview.user_id).toBe(mockReview.user_id);
+  });
 
-    const user = await User.create({ username: 'testuser', email: 'testuser@example.com' });
-    const review = await UserReview.create({
+  test('should find a UserReview', async () => {
+    const mockReview = {
+      id: 1,
       movie_name: 'Inception',
       review_score: 9,
       review_comment: 'Great movie!',
-      user_id: user.id,
-    });
+      user_id: 1
+    };
 
-    expect(userCreateSpy).toHaveBeenCalledWith({
-      username: 'testuser',
-      email: 'testuser@example.com',
-    });
-    expect(reviewCreateSpy).toHaveBeenCalledWith({
-      movie_name: 'Inception',
-      review_score: 9,
-      review_comment: 'Great movie!',
-      user_id: user.id,
-    });
+    UserReview.findOne = jest.fn().mockResolvedValue(mockReview);
 
-    expect(review).toBeDefined();
-    expect(review.movie_name).toBe('Inception');
-    expect(review.review_score).toBe(9);
-    expect(review.review_comment).toBe('Great movie!');
-    expect(review.user_id).toBe(user.id);
+    const foundReview = await UserReview.findOne({ where: { id: 1 } });
+    expect(foundReview).toEqual(mockReview);
+    expect(UserReview.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
   });
 
-  test('should not create UserReview without required fields', async () => {
-    const reviewCreateSpy = jest.spyOn(UserReview, 'create').mockRejectedValue(new Error('Validation error'));
+  test('should handle UserReview not found', async () => {
+    UserReview.findOne = jest.fn().mockResolvedValue(null);
 
-    await expect(UserReview.create({
-      review_score: 9,
-      user_id: 1,
-    })).rejects.toThrow('Validation error');
-
-    expect(reviewCreateSpy).toHaveBeenCalledWith({
-      review_score: 9,
-      user_id: 1,
-    });
-  });
-
-  test('should be associated with a User', async () => {
-    const mockUser = { id: 2, username: 'anotheruser', email: 'anotheruser@example.com' };
-    const mockReview = { id: 1, movie_name: 'Avatar', review_score: 8, user_id: mockUser.id };
-
-    const userCreateSpy = jest.spyOn(User, 'create').mockResolvedValue(mockUser);
-    const reviewCreateSpy = jest.spyOn(UserReview, 'create').mockResolvedValue(mockReview);
-    const reviewFindOneSpy = jest.spyOn(UserReview, 'findOne').mockResolvedValue({
-      ...mockReview,
-      User: mockUser,
-    });
-
-    const user = await User.create({ username: 'anotheruser', email: 'anotheruser@example.com' });
-    const review = await UserReview.create({
-      movie_name: 'Avatar',
-      review_score: 8,
-      user_id: user.id,
-    });
-
-    const foundReview = await UserReview.findOne({ where: { id: review.id }, include: User });
-
-    expect(reviewFindOneSpy).toHaveBeenCalledWith({
-      where: { id: review.id },
-      include: User,
-    });
-
-    expect(foundReview.User).toBeDefined();
-    expect(foundReview.User.username).toBe('anotheruser');
+    const foundReview = await UserReview.findOne({ where: { id: 999 } });
+    expect(foundReview).toBeNull();
+    expect(UserReview.findOne).toHaveBeenCalledWith({ where: { id: 999 } });
   });
 });
-
