@@ -40,6 +40,8 @@ describe('User Controller - Get User', () => {
     expect(consoleLogSpy).toHaveBeenCalledWith('getUser: User gotten successfully', mockUser);
   });
 
+  
+
   it('should handle error if getting a user fails', async () => {
     const req = {
       params: { user_id: 1 }
