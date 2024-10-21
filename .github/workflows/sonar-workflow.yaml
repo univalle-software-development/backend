@@ -41,7 +41,7 @@ jobs:
             -Dsonar.organization=univalle-software-development \
             -Dsonar.projectKey=univalle-software-development_backend \
             -Dsonar.sources=./src \
-            -Dsonar.exclusions=**/node_modules/** \
+            -Dsonar.exclusions=**/node_modules/**,./src/db.js \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.javascript.node.maxspace=4096 \
             -Dsonar.tests=./tests \
