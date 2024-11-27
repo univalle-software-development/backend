@@ -37,3 +37,6 @@
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+project_docker_container_installation.sh
+project_podman_container_installation.sh
