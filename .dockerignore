@@ -1,0 +1,42 @@
+# Development files
+**/node_modules/
+**/.git
+**/README.md
+**/LICENSE
+**/.vscode
+**/npm-debug.log
+**/coverage
+**/.env
+**/.editorconfig
+**/.aws
+**/dist
+
+# Build output
+**/build
+**/output
+
+# IDE-specific files
+*/.log
+*/.tmp
+*/.swp
+*/.suo
+*/.csproj
+*/.sln
+*/.vcxproj
+*/.vcxproj.filters
+*/.user
+*/.userprefs
+*/.cache
+*/.launch
+*/.cproject
+*/.metaproject
+*/.spotbugssettings
+**/bin/
+**/obj/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+project_docker_container_installation.sh
+project_podman_container_installation.sh

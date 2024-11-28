@@ -1,0 +1,29 @@
+# Base image
+FROM node:lts-bullseye AS base
+
+# Set working directory
+WORKDIR /app/backend
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy application code
+COPY . .
+
+# Development stage
+FROM base AS development
+ENV NODE_ENV=development
+ENV PORT=3000
+EXPOSE 3000
+CMD ["nodemon", "./src/server.js"]
+
+# Production stage
+FROM base AS production
+ENV NODE_ENV=production
+ENV PORT=3000
+RUN npm prune --production  # Remove dev dependencies
+EXPOSE 3000
+CMD ["node", "./src/server.js"]

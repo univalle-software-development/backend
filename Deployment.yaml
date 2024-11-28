@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: container-1
+        image: my-image-1:latest
+        ports:
+        - containerPort: 3000
+      - name: container-2
+        image: my-image-2:latest
+        ports:
+        - containerPort: 4000
