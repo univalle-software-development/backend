@@ -23,3 +23,13 @@ For production:
 ```
 docker build --target production -t myapp:prod
 ```
+
+## For buidinng the two images, frontend and backend, and tagging it
+Give the permissions
+```
+chmod +x build_images.sh
+```
+Execute the scripting for build the images
+```
+./build_images.sh my-app-backend latest ./path/to/my-app-backend-context my-app-frontend latest ./path/to/my-app-frontend-context
+```

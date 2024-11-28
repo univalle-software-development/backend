@@ -1,4 +1,4 @@
-FROM node:lts-bullseye
+FROM node:23-alpine
 
 ARG NODE_ENV=development
 ARG PORT=3000
