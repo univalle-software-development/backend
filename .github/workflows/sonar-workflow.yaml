@@ -70,6 +70,6 @@ jobs:
         env:
           PASSWORD: ${{ secrets.GHRC_TOKEN }}
           REGISTRY: "docker.pkg.github.com"
-          IMAGE_NAME: ${{ vars.OWNER }}/my-app-backend
-          TAG_NAME: "v0.0.1"
+          IMAGE_NAME: /my-app-backend
+          LATEST: true
   
