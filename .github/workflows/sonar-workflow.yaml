@@ -106,6 +106,3 @@ jobs:
 
           # Optional - this sets your Kubernetes context's current namespace after logging in.
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
-	
-
-  
