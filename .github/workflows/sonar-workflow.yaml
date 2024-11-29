@@ -63,3 +63,4 @@ jobs:
         with:
           push: true
           tags: ${{ vars.OWNER }}/my-app-backend:latest
+          provenance: false
