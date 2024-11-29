@@ -113,7 +113,7 @@ jobs:
             --docker-server=ghcr.io \
             --docker-username=${{ github.actor }} \
             --docker-password=${{ secrets.GHRC_TOKEN }} \
-            --docker-email=cristian.pacheco@correounivalle.edu.co
+            --docker-email=${{ vars.PERSONAL_EMAIL }}
 
       - name: Linking the service account for pulling
         run: oc secrets link default ghcr-secret --for=pull
