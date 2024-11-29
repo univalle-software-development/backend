@@ -107,16 +107,17 @@ jobs:
           # Optional - this sets your Kubernetes context's current namespace after logging in.
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
 
-      - name: Configuring the Github registry for Openshift access
-        run: |  
-          oc create secret docker-registry ghcr-secret \
-            --docker-server=ghcr.io \
-            --docker-username=${{ github.actor }} \
-            --docker-password=${{ secrets.GHRC_TOKEN }} \
-            --docker-email=${{ vars.PERSONAL_EMAIL }}
+      # One-shot cofiguring commands- that's why i comment this
+      #- name: Configuring the Github registry for Openshift access
+        #run: |  
+          #oc create secret docker-registry ghcr-secret \
+            #--docker-server=ghcr.io \
+            #--docker-username=${{ github.actor }} \
+            #--docker-password=${{ secrets.GHRC_TOKEN }} \
+            #--docker-email=${{ vars.PERSONAL_EMAIL }}
 
-      - name: Linking the service account for pulling
-        run: oc secrets link default ghcr-secret --for=pull
+      #- name: Linking the service account for pulling
+        #run: oc secrets link default ghcr-secret --for=pull
 
       - name: Deploying in the cluster to Openshift
         run: oc apply -f Deployment.yaml
