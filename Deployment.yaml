@@ -14,10 +14,10 @@ spec:
     spec:
       containers:
       - name: container-1
-        image: my-image-1:latest
+        image: ghcr.io/univalle-software-development/backend/my-app-backend:latest
         ports:
         - containerPort: 3000
       - name: container-2
-        image: my-image-2:latest
+        image: ghcr.io/univalle-software-development/backend/my-app-backend:latest
         ports:
-        - containerPort: 4000
+        - containerPort: 3001
