@@ -47,3 +47,19 @@ jobs:
             -Dsonar.tests=./tests \
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
             -Dsonar.genericCoverageReportPaths=coverage/coverage-final.json
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.REDHAT_OPENSHIFT_KUBERNETES }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ vars.OWNER }}/my-app-backend:latest
