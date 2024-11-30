@@ -13,8 +13,8 @@ permissions:
   contents: read      
 
 jobs:
-  build:
-    name: Build Stage
+  integration:
+    name: Integration Stage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to main branch
@@ -57,6 +57,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build  # This job depends on the build job
     steps:
+      - name: Checkout to main branch
+        uses: actions/checkout@v3
+      
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -91,8 +94,8 @@ jobs:
       - name: Authenticate and set context
         uses: redhat-actions/oc-login@v1
         env:
-          OPENSHIFT_USER: cristiandpt
-          OPENSHIFT_NAMESPACE: cristiandpt-dev
+          OPENSHIFT_USER: ${{ vars.OPENSHIFT_USER }}
+          OPENSHIFT_NAMESPACE: ${{ vars.OPENSHIFT_NAMESPACE }}
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
