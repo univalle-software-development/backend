@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app-deployment
+  name: my-app-stable
 spec:
   replicas: 3
   selector:
@@ -16,15 +16,9 @@ spec:
     spec:
       containers:
       - name: movie-pod
-        image: "{{ .Values.GHRC_IMAGE }}" 
+        image: ghcr.io/univalle-software-development/backend/my-app-backend:latest
         ports:
         - containerPort: 3000
-        env:  # Corrected indentation
-        - name: GHRC_IMAGE   # Reference to the variable in the config map
-          valueFrom:
-            configMapKeyRef:
-              name: ghrc-registry-config   
-              key: backend-ghcr-image   
 
 ---
 
@@ -46,12 +40,6 @@ spec:
     spec:
       containers:
       - name: my-container
-        image: "{{ .Values.GHRC_IMAGE }}"    # Canary image
+        image: ghcr.io/univalle-software-development/backend/my-app-backend:latest    # Canary image
         ports:
         - containerPort: 3000
-        env:  # Corrected indentation
-        - name: GHRC_IMAGE   
-          valueFrom:
-            configMapKeyRef:
-              name: ghrc-registry-config   
-              key: backend-ghcr-image    
