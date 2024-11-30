@@ -86,6 +86,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: delivery  # This job depends on the delivery job
     steps:
+      - name: Checkout to main branch
+        uses: actions/checkout@v3
+        
       - name: Install oc
         uses: redhat-actions/oc-installer@v1
         with:
