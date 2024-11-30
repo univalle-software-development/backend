@@ -1,9 +1,13 @@
 // Import the express module
 const express = require('express');
 const { searchMovies  } = require('./services/movies_service.js');
+const cors = require('cors');
+
+
 // Create an instance of express
 const app = express();
 
+app.use(cors()); 
 // Define a port
 const PORT = process.env.PORT || 3000;
 
@@ -35,7 +39,8 @@ app.get('/search', async (req, res) => {
 
   try {
     const movies = await searchMovies({ search });
-    if (movies) {
+      if (movies) {
+		  console.log(movies);
       res.json(movies); // Return the movies as JSON
     } else {
       res.status(404).json({ message: 'No movies found' });
