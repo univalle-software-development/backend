@@ -1,6 +1,6 @@
 // Import the express module
 const express = require('express');
-
+const { searchMovies  } = require('./services/movies_service.js');
 // Create an instance of express
 const app = express();
 
@@ -27,6 +27,22 @@ app.get('/contact', (req, res) => {
 
 app.get('/404', (req, res) => {
   res.status(404).send('Not found');
+});
+
+app.get('/search', async (req, res) => {
+  const { query } = req; // Get the query parameters
+  const search = query.q; // Assuming the search term is passed as a query parameter 'q'
+
+  try {
+    const movies = await searchMovies({ search });
+    if (movies) {
+      res.json(movies); // Return the movies as JSON
+    } else {
+      res.status(404).json({ message: 'No movies found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 

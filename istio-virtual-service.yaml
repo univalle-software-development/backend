@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: my-app-virtualservice
+  namespace: cristiandpt-dev  # Replace with your namespace
+spec:
+  hosts:
+    - my-app-service  # The name of your service
+  http:
+    - route:
+        - destination:
+            host: my-app-service
+            subset: stable  # Stable version subset
+          weight: 75       # 75% of traffic goes to stable
+        - destination:
+            host: my-app-service
+            subset: canary  # Canary version subset
+          weight: 25       # 25% of traffic goes to canary
