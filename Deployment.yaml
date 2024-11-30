@@ -19,15 +19,13 @@ spec:
         image: "{{ .Values.GHRC_IMAGE }}" 
         ports:
         - containerPort: 3000
-       env:
-       - name: GHRC_IMAGE   # Reference to the variable in the config map
-         valueFrom:
-           configMapKeyRef:
-             name: ghrc-registry-config   
-             key: backend-ghcr-image   
-    
+        env:  # Corrected indentation
+        - name: GHRC_IMAGE   # Reference to the variable in the config map
+          valueFrom:
+            configMapKeyRef:
+              name: ghrc-registry-config   
+              key: backend-ghcr-image   
 
-          
 ---
 
 apiVersion: apps/v1
@@ -51,9 +49,9 @@ spec:
         image: "{{ .Values.GHRC_IMAGE }}"    # Canary image
         ports:
         - containerPort: 3000
-       env:
-       - name: GHRC_IMAGE   
-         valueFrom:
-           configMapKeyRef:
-             name: ghrc-registry-config   
-             key: backend-ghcr-image    
+        env:  # Corrected indentation
+        - name: GHRC_IMAGE   
+          valueFrom:
+            configMapKeyRef:
+              name: ghrc-registry-config   
+              key: backend-ghcr-image    
