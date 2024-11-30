@@ -3,21 +3,57 @@ kind: Deployment
 metadata:
   name: my-app-deployment
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: my-app
+      version: stable
   template:
     metadata:
       labels:
         app: my-app
+        version: stable
     spec:
       containers:
-      - name: container-1
-        image: ghcr.io/univalle-software-development/backend/my-app-backend:latest
+      - name: movie-pod
+        image: "{{ .Values.GHRC_IMAGE }}" 
         ports:
         - containerPort: 3000
-      - name: container-2
-        image: ghcr.io/univalle-software-development/backend/my-app-backend:latest
+       env:
+       - name: GHRC_IMAGE   # Reference to the variable in the config map
+         valueFrom:
+           configMapKeyRef:
+             name: ghrc-registry-config   
+             key: backend-ghcr-image   
+    
+
+          
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-canary
+spec:
+  replicas: 1  # 25% For the Canary 
+  selector:
+    matchLabels:
+      app: my-app
+      version: canary  # Label for canary version
+  template:
+    metadata:
+      labels:
+        app: my-app
+        version: canary
+    spec:
+      containers:
+      - name: my-container
+        image: "{{ .Values.GHRC_IMAGE }}"    # Canary image
         ports:
-        - containerPort: 3001
+        - containerPort: 3000
+       env:
+       - name: GHRC_IMAGE   
+         valueFrom:
+           configMapKeyRef:
+             name: ghrc-registry-config   
+             key: backend-ghcr-image    
