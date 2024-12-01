@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: my-app-destination-rule
+  namespace: cristiandpt-dev  # Replace with your namespace
+spec:
+  host: my-app-service
+  subsets:
+    - name: stable     # Subset for stable version pods
+      labels:
+        version: stable # Match the label from your deployment
+    - name: canary     # Subset for canary version pods
+      labels:
+        version: canary # Match the label from your deployment

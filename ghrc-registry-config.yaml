@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  backend-ghcr-image: ghcr.io/univalle-software-development/backend/my-app-backend:latest
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-11-30T19:44:16Z"
+  name: ghrc-registry-config
+  namespace: cristiandpt-dev
+  resourceVersion: "2780294962"
+  uid: ec2caf0a-f187-4651-a54b-00de3ddddcf1
