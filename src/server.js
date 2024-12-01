@@ -7,7 +7,16 @@ const cors = require('cors');
 // Create an instance of express
 const app = express();
 
-app.use(cors()); 
+// Configure CORS
+const corsOptions = {
+  origin: 'https://filmore-seven.vercel.app', // Allow requests from this origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+};
+
+// Use CORS middleware
+app.use(cors(corsOptions));
+
 // Define a port
 const PORT = process.env.PORT || 3000;
 
@@ -40,7 +49,6 @@ app.get('/search', async (req, res) => {
   try {
     const movies = await searchMovies({ search });
       if (movies) {
-		  console.log(movies);
       res.json(movies); // Return the movies as JSON
     } else {
       res.status(404).json({ message: 'No movies found' });
