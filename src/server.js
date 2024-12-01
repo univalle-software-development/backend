@@ -9,7 +9,7 @@ const app = express();
 
 // Configure CORS
 const corsOptions = {
-  origin: '*', // Allow requests from this origin
+  origin: 'https://filmore-seven.vercel.app', // Allow requests from this origin
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
 	allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers,
 	exposedHeaders: ['Authorization'], // Expose the Authorization header to the client
