@@ -59,6 +59,7 @@ app.get('/search', async (req, res) => {
   }
 });
 
+app.get('/stable-version', (req, res) => { res.status(200).send('This endpoint is defined on this version'); });
 
 module.exports = {app, server};
 
