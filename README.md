@@ -1,35 +1,119 @@
+# Frontend CI/CD Pipeline Project
 
+This repository contains a React frontend application with a comprehensive CI/CD pipeline implemented using GitHub Actions and Vercel deployment.
 
-## Build the server project
-For build the docker container, run the next command shell in the terminal at the project's root:
+## Project Structure
+
 ```
-docker compose build
+.
+├── .github/
+│   └── workflows/
+│       ├── production-deployment.yml  # Production deployment workflow
+│       ├── staging-deployment.yml     # Staging deployment workflow
+│       └── sonar-workflow.yaml        # Quality gate and testing workflow
+├── filmore/                          # Frontend application directory
+│   ├── src/
+│   │   ├── components/               # React components
+│   │   ├── hooks/                    # Custom React hooks
+│   │   ├── services/                 # API services
+│   │   └── test/                     # Test files
+│   └── public/                       # Static assets
+├── sonar-project.properties          # SonarCloud configuration
+├── Dockerfile                        # Docker configuration
+├── docker-compose.yml                # Docker Compose configuration
+├── deployment.yml                    # Kubernetes deployment configuration
+└── README.md                         # Project documentation
 ```
 
-## Running up the server
-For run up the server, enter the follow command to the terminal in the project's root:
-```
-docker compose up filmore_backend
+## CI/CD Pipeline
+
+Our CI/CD pipeline consists of three main workflows that work together to ensure code quality and reliable deployments:
+
+### 1. Quality Gate and Tests (sonar-workflow.yaml)
+- Runs on push to main/staging and pull requests
+- Performs automated testing with 80% coverage requirement
+- Conducts code analysis using SonarCloud
+- Acts as a quality gate for deployments
+
+### 2. Staging Deployment (staging-deployment.yml)
+- Triggers on push to staging branch
+- Waits for quality gate approval
+- Deploys to staging environment for testing
+- Uses Vercel for deployment
+
+### 3. Production Deployment (production-deployment.yml)
+- Triggers on push to main branch
+- Waits for quality gate approval
+- Deploys to production environment
+- Uses Vercel for deployment
+
+## Development Environment
+
+### Prerequisites
+- Node.js 18
+- PNPM package manager
+- Vercel CLI
+- Docker (optional)
+- Kubernetes (optional)
+
+### Setup Instructions
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
 ```
 
-The server will be published at [localhost:3000](http://localhost:3000)
-
-## For build a container according the stage
-For development:
-```
-docker build --target development -t myapp:dev
-```
-For production:
-```
-docker build --target production -t myapp:prod
+2. Install dependencies:
+```bash
+cd filmore
+pnpm install
 ```
 
-## For buidinng the two images, frontend and backend, and tagging it
-Give the permissions
+3. Set up environment variables:
+- VERCEL_TOKEN
+- VERCEL_ORG_ID
+- VERCEL_PROJECT_ID
+- FRONTEND_SONAR_TOKEN
+
+4. Run tests:
+```bash
+pnpm test
 ```
-chmod +x build_images.sh
-```
-Execute the scripting for build the images
-```
-./build_images.sh my-app-backend latest ./path/to/my-app-backend-context my-app-frontend latest ./path/to/my-app-frontend-context
-```
+
+## Container Support
+
+The project includes Docker and Kubernetes configurations for containerization:
+
+- Use `Dockerfile` for building container images
+- Use `docker-compose.yml` for local development
+- Use `deployment.yml` for Kubernetes deployments
+
+## Quality Standards
+
+The project enforces the following quality standards:
+
+- Minimum 80% test coverage
+- SonarCloud quality gate checks
+- Automated testing before deployment
+- Code review requirements via pull requests
+
+## Deployment
+
+The project uses Vercel for deployments with two environments:
+
+- Staging: For testing and verification
+- Production: For end users
+
+Deployments are automated through GitHub Actions and require passing the quality gate.
+
+## Contributing
+
+1. Create a feature branch from staging
+2. Make your changes
+3. Submit a pull request to staging
+4. Once approved and merged, changes will be automatically deployed to staging
+5. After verification, merge staging to main for production deployment
+
+## License
+
+[Project License Information]
