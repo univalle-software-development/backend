@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 3000;
 
 // Define a simple route
 app.get('/', (req, res) => {
-  res.send('Hello, World!');
+  res.send('Hello, World from version 1!');
 });
 
 // Start the server
@@ -59,7 +59,6 @@ app.get('/search', async (req, res) => {
   }
 });
 
-app.get('/stable-version', (req, res) => { res.status(200).send('This endpoint is defined on this version'); });
 
 module.exports = {app, server};
 
