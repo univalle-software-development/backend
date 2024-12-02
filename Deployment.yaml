@@ -16,10 +16,10 @@ spec:
     spec:
       containers:
       - name: movie-pod
-        image: ghcr.io/univalle-software-development/backend/my-app-backend:latest
+        image: ghcr.io/univalle-software-development/backend/my-app-backend-canary
         ports:
         - containerPort: 3000
-
+          
 ---
 
 apiVersion: apps/v1

@@ -78,8 +78,8 @@ jobs:
         env:
           PASSWORD: ${{ secrets.GHRC_TOKEN }}
           REGISTRY: "docker.pkg.github.com"
-          IMAGE_NAME: my-app-backend
-          LATEST: true
+          IMAGE_NAME: my-app-backend-canary
+          LATEST: false
 
   deployment:
     name: Deployment Stage

@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 3000;
 
 // Define a simple route
 app.get('/', (req, res) => {
-  res.send('Hello, World from version 1!');
+  res.send('Hello, World from canary!');
 });
 
 // Start the server
