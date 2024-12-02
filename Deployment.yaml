@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: movie-pod
-        image: ghcr.io/univalle-software-development/backend/my-app-backend-canary
+        image: ghcr.io/univalle-software-development/backend/my-app-backend:latest
         ports:
         - containerPort: 3000
           
@@ -40,6 +40,6 @@ spec:
     spec:
       containers:
       - name: my-container
-        image: ghcr.io/univalle-software-development/backend/my-app-backend:latest    # Canary image
+        image: ghcr.io/univalle-software-development/backend/my-app-backend-canary    # Canary image
         ports:
         - containerPort: 3000
