@@ -21,7 +21,7 @@ describe('API Endpoints', () => {
 	it('should return Hello, World! on GET /', async () => {
 		const response = await request(app).get('/');
 		expect(response.status).toBe(200);
-		expect(response.text).toBe('Hello, World from version 1!');
+		expect(response.text).toBe('Hello, World from canary!');
 	});
 
 	it('should return About Page on GET /about', async () => {
